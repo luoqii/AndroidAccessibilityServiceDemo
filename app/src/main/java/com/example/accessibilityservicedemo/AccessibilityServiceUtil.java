@@ -1,8 +1,31 @@
 package com.example.accessibilityservicedemo;
 
+import android.content.ComponentName;
+import android.content.Intent;
 import android.view.accessibility.AccessibilityEvent;
 
 public class AccessibilityServiceUtil {
+    /**
+     * Activity Action: Show detail settings of a particular accessibility service.
+     * <p>
+     * In some cases, a matching Activity may not exist, so ensure you safeguard against this.
+     * <p>
+     * Input: {@link Intent#EXTRA_COMPONENT_NAME} must specify the accessibility service component
+     * name to be shown.
+     * <p>
+     * Output: Nothing.
+     * @hide
+     **/
+    public static final String ACTION_ACCESSIBILITY_DETAILS_SETTINGS =
+            "android.settings.ACCESSIBILITY_DETAILS_SETTINGS";
+
+    /**
+     * Intent extra: A {@link ComponentName} value.
+     * <p>
+     * Type: String
+     * </p>
+     */
+    public static final String EXTRA_COMPONENT_NAME = "android.intent.extra.COMPONENT_NAME";
 
     public String dump(AccessibilityEvent event){
         String str = "";
