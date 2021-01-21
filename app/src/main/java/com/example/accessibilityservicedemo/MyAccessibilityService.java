@@ -2,16 +2,24 @@ package com.example.accessibilityservicedemo;
 
 import android.accessibilityservice.AccessibilityService;
 import android.accessibilityservice.AccessibilityServiceInfo;
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.app.Service;
 import android.content.Intent;
+import android.content.ServiceConnection;
+import android.os.Build;
 import android.os.IBinder;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
+
+import androidx.annotation.RequiresApi;
+import androidx.core.app.NotificationCompat;
 
 import org.bbs.android.log.Log;
 
 public class MyAccessibilityService extends AccessibilityService {
     private static final String TAG = MyAccessibilityService.class.getSimpleName();
+    public  static final String CHANNEL_ID = "access_service_channel_id";
 
     public MyAccessibilityService() {
     }
@@ -21,7 +29,10 @@ public class MyAccessibilityService extends AccessibilityService {
         Log.d(TAG, "onAccessibilityEvent event:" + event);
         AccessibilityNodeInfo nodeInfo = event.getSource();
         Log.d(TAG, "nodeInfo:" + nodeInfo);
+
+        AccessibilityEventDispatcher.getInstance().dispatchAccessibilityEvent(event);
     }
+
 
     @Override
     public void onInterrupt() {
@@ -62,5 +73,19 @@ public class MyAccessibilityService extends AccessibilityService {
 
         Log.d(TAG, "new    info:" + info);
         this.setServiceInfo(info);
+
+        startForeground();
     }
+
+    void startForeground() {
+        Notification.Builder b = new Notification.Builder(this)
+                .setContentText("contentText")
+                .setSubText("subtext");
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            b.setChannelId(CHANNEL_ID);
+        }
+        Notification notif = b.build();
+        startForeground(R.string.app_name, notif);
+    }
+
 }

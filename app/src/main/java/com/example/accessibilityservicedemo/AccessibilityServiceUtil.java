@@ -3,6 +3,7 @@ package com.example.accessibilityservicedemo;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.view.accessibility.AccessibilityEvent;
+import android.view.accessibility.AccessibilityRecord;
 
 public class AccessibilityServiceUtil {
     /**
@@ -58,5 +59,62 @@ public class AccessibilityServiceUtil {
                 |AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED
                 |AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED
                 |AccessibilityEvent.TYPE_WINDOWS_CHANGED;
+    }
+
+    public static void dump_TYPE_WINDOW_STATE_CHANGED(StringBuilder builder, AccessibilityEvent event){
+        dump_CommonType(builder, event);
+        builder.append("\n");
+        int recordCount =  event.getRecordCount();
+        for (int i = 0; i < recordCount; i++) {
+            AccessibilityRecord record = event.getRecord(i);
+            builder.append("\n");
+            builder.append("#" + i );
+            builder.append("\n");
+            builder.append("text:" + record.getText());
+        }
+    }
+
+    public static void dump_TYPE_WINDOW_CONTENT_CHANGED(StringBuilder builder, AccessibilityEvent event){
+        dump_CommonType(builder, event);
+        int recordCount =  event.getRecordCount();
+        for (int i = 0; i < recordCount; i++) {
+            AccessibilityRecord record = event.getRecord(i);
+            builder.append("\n");
+            builder.append("#" + i );
+            builder.append("\n");
+            builder.append("source:" + record.getSource());
+            builder.append("\n");
+            builder.append("className:" + record.getClassName());
+            builder.append("\n");
+            builder.append("text:" + record.getText());
+            builder.append("\n");
+            builder.append("fromIndex:" + record.getFromIndex());
+            builder.append("\n");
+            builder.append("toIndex:" + record.getToIndex());
+        }
+    }
+
+    public static void dump_TYPE_VIEW_TEXT_TRAVERSED_AT_MOVEMENT_GRANULARITY(StringBuilder builder, AccessibilityEvent event){
+        dump_CommonType(builder, event);
+        builder.append("granularity:" + event.getMovementGranularity());
+    }
+
+    public static void dump_CommonType(StringBuilder builder, AccessibilityEvent event){
+        builder.append("\n");
+        builder.append("eventType:" + event.getEventType());
+        builder.append("\n");
+        builder.append("packageName:" + event.getPackageName());
+        builder.append("\n");
+        builder.append("eventTime:" + event.getEventTime());
+        int recordCount =  event.getRecordCount();
+        for (int i = 0; i < recordCount; i++) {
+            AccessibilityRecord record = event.getRecord(i);
+            builder.append("\n");
+            builder.append("#" + i );
+            builder.append("\n");
+            builder.append("source:" + record.getSource());
+            builder.append("\n");
+            builder.append("className:" + record.getClassName());
+        }
     }
 }
