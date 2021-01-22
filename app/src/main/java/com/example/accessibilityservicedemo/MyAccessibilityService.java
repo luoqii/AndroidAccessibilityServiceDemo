@@ -4,6 +4,7 @@ import android.accessibilityservice.AccessibilityService;
 import android.accessibilityservice.AccessibilityServiceInfo;
 import android.app.Notification;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.content.ServiceConnection;
@@ -78,8 +79,13 @@ public class MyAccessibilityService extends AccessibilityService {
     }
 
     void startForeground() {
+        Intent notificationIntent = new Intent(this, nRfConnectActivity.class);
+        PendingIntent pendingIntent =
+                PendingIntent.getActivity(this, 0, notificationIntent, 0);
+
         Notification.Builder b = new Notification.Builder(this)
                 .setContentText("contentText")
+                .setContentIntent(pendingIntent)
                 .setSubText("subtext");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             b.setChannelId(CHANNEL_ID);
